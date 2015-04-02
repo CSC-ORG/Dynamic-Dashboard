@@ -1,0 +1,81 @@
+<!--style>
+body{background-color: #fcf8ee;}
+</style-->
+<section class="content dashboard" data-ng-controller="DashboardController">
+		<br>
+		<form class="form-inline" ng-show="upload">
+			Upload <span class="purple">Datasheet</span>
+			<div class="form-group">
+				<input type="file" class="form-control" id="filename" ng-blur="checkXLS()">
+				<input type="text" ng-show="isXLS" class="form-control" id="sheetno" placeholder="Sheet No." size="9" maxlength="5"/>
+			</div>
+			<span class="csc-button bg-red" ng-click="addFile()"><span class="glyphicon glyphicon-upload" style="font-size:1.2em;"></span></span> 
+			or Google <span class="green">spreadsheet</span>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="https://docs.google.com/spreadsheets/d/1lkGFWGxwG-i_Wuc6jtmKWx7DYmgGtTXAmY52pg7d_j8" size="35" id="link">
+			</div>
+			<span class="csc-button bg-red" ng-click="addLink()"><span class="glyphicon glyphicon-download" style="font-size:1.2em;"></span></span>
+			<span class="glyphicon glyphicon-ok-sign green" ng-show="create_btn"></span>
+		</form>
+		<div ng-show="menu">
+			<a href="#!/">
+				<span class="home-btn"><span class="glyphicon glyphicon-home"></span></span>
+			</a>
+			<a ui-sref="dashboard({id:dashboard._id})" ui-sref-opts="{reload: true}">
+				<span class="dashboard-btn"><span class="glyphicon glyphicon-dashboard"></span></span>
+			</a>
+			<a ui-sref="dashboard.sourceFile">
+				<span class="view-src-btn">View Source File</span>
+			</a>
+			<a ui-sref="dashboard.prepareChart">
+				<span class="new-chart-btn">Prepare a Chart</span>
+			</a>
+			<a>
+				<span class="edit-dash-btn" data-ng-click="toggleEdit()" ui-sref="dashboard">{{edit_btn}}</span>
+			</a>
+			<a ui-sref="dashboard.share">
+				<span class="settings-btn">Share</span>
+			</a>
+		</div>
+		<div class="spinner" ng-show="loader">
+			  <div class="bounce1"></div>
+			  <div class="bounce2"></div>
+			  <div class="bounce3"></div>
+			</div>
+		<span ng-show="error" class="red">{{error}}</span>
+		<div class="division"></div>
+		<div ui-view>
+		<div class="container">
+			<div class="row">
+				<span data-ng-show="!edit" class="title">
+						{{dashboard.title}}
+				</span>
+				<span data-ng-show="edit" class="title-edit-input">
+					<textarea maxlength="100" data-ng-model="dashboard.title" cols="{{dashboard.title.length}}" placeholder="{{dashboard.title}}"></textarea>
+				</span><br>
+				<span class="last-update" ng-show="dashboard.updated">
+						<span class="glyphicon glyphicon-time"></span> Last updated on {{dashboard.updated|date:'medium'}}
+				</span>
+			</div>
+			<div class="row">
+				<div class="subtitle">
+					<div data-ng-show="!edit">{{dashboard.description}}</div>
+					<textarea data-ng-show="edit" data-ng-model="dashboard.description" placeholder="{{dashboard.description}}"></textarea><br>
+				</div>
+			</div>
+			<button class="csc-button bg-blue" ng-show="create_btn" data-ng-click="create()">Create Dashboard</button>
+			<div ng-if="dashboard.charts.length!=0" ng-repeat="chart in dashboard.charts">
+				<div class="col-md-6">
+					<div ng-class="(edit==true)?'edit-chart':''">
+						<a href="" ng-show="edit" ng-click="removeChart(chart._id,$index)"><span class="glyphicon glyphicon-remove red" title="Remove chart"></span></a>
+						<highchart config="chart.config"></highchart>
+					</div>
+				</div>
+			</div>
+			<div class="row default-msg" ng-if="dashboard.charts.length==0">
+				There are no <span class="red">charts</span> yet. Why don't you <span class="green">prepare</span> one?
+			</div>
+		</div>
+		</div>
+		<br><br>	
+</section>

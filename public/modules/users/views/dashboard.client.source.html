@@ -1,0 +1,60 @@
+<section data-ng-controller="SourceController">
+	<div class="col-md-9" ng-show="loader">Loading
+		<div class="spinner">
+		  <div class="bounce1"></div>
+		  <div class="bounce2"></div>
+		  <div class="bounce3"></div>
+		</div>
+	</div>
+	<div class="col-md-9" ng-show="!loader">
+		<div>
+			<a href="" class="pull-left" ng-hide="next==0"><span class="glyphicon glyphicon-menu-left" ng-click="next=next-resultsPerPage;init()"></span></a>
+			<span class="red">
+				<select ng-model="resultsPerPage" ng-change="init()">
+					<option value="10">10 rows per page</option>
+					<option value="20">20 rows per page</option>
+					<option value="30">30 rows per page</option>
+					<option value="40">40 rows per page</option>
+					<option value="50">50 rows per page</option>
+				</select> among {{numrows}} rows.
+			</span>
+			<a href="" class="pull-right" ng-hide="next+resultsPerPage>=numrows"><span class="glyphicon glyphicon-menu-right" ng-click="next=next+resultsPerPage;init()"></span></a>
+		</div>
+		<table class="table table-bordered">
+			<th ng-repeat="col in tableCol">{{col}}</th>
+			<tr ng-repeat="var in rows">	
+				<td ng-repeat="col in tableCol">{{tableData[col][var]}}</td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-md-3 filters">
+		<span class="green">Make a new Dataset</span>
+		<div>
+			<span class="filter-name">
+				<input ng-keyup="(filterName.length<5)?fillname=false:fillname=true" type="text" ng-model="filterName" placeholder="Name your dataset...">
+				<span ng-hide="fillname" class="red"><span class="glyphicon glyphicon-exclamation-sign" title="Must have more than 5 characters."></span></span>
+			</span><br>
+			<span class="filter-add" ng-click="addFilter()"><span class="glyphicon glyphicon-plus-sign"></span> Add</span>
+			<span class="filter-add" ng-click="applyFilter()"><span class="glyphicon glyphicon-th-list"></span> Apply</span>
+			<span class="filter-add" ng-click="saveFilter()"><span class="glyphicon glyphicon-save-file"></span> Save</span>
+			<div class="filter-option" ng-repeat="filter in filters">
+				<div class="pull-right"><span class="glyphicon glyphicon-remove" title="Remove" ng-click="removeFilter($index)"></span></div>
+				<label>Column</label>
+					<select ng-model="filter.column" ng-change="selectColumn($index)">
+						<option ng-repeat="col in tableCol" value="{{col}}">{{col}}</option>
+					</select>
+				<div class="filter-option-val">
+					<span ng-repeat="val in uniqueValues[filter.column]"><input type="checkbox" value="{{value}}" checked ng-click="filterSelect(val,$parent.$index)">{{val}}</span>
+				</div>
+				<label>Sort</label> 
+				<label class="radio-inline">
+				  <input type="radio" name="inlineRadioOptions{{$index}}" id="inlineRadio1{{$index}}" value="1" ng-model="filter.sort"> Ascending
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="inlineRadioOptions{{$index}}" id="inlineRadio2{{$index}}" value="-1" ng-model="filter.sort"> Descending
+				</label><br>
+				<label>Limit</label> <input type="text" ng-model="filter.limit">
+			</div>
+		</div>
+	</div>
+</section>

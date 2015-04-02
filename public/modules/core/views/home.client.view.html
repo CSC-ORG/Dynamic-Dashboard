@@ -1,0 +1,59 @@
+<section data-ng-controller="HomeController">
+<div data-ng-show="!authentication.user">
+	<div class="main-background">
+		<div class="caption">
+			{{caption}}
+		</div>
+	</div>
+	<div class="container">
+		<br><br><br><br>
+		<div class="col-md-4 description">
+			<span class="glyphicon glyphicon-cloud-upload"></span><br>
+			<h3 class="red">Upload Datasheets</h3>
+			<h5>Give us your data in the form of excel sheet, CSV or a link to a google spreadsheet.</h5>
+		</div>
+		<div class="col-md-4 description">
+			<span class="glyphicon glyphicon-tasks"></span><br>
+			<h3 class="green">Create Datasets</h3>
+			<h5>Filter your data according to needs that is best suited for a visualisation.</h5>
+		</div>
+		<div class="col-md-4 description">
+			<span class="glyphicon glyphicon-stats"></span><br>
+			<h3 class="yellow">Analyse Statistics</h3>
+			<h5>Bring your data to real graphics, analysis and share it with your colleagues.</h5>
+		</div>
+	</div>
+<br><br>
+	<footer data-ng-include="'/modules/core/views/footer.client.view.html'"></footer>
+</div>
+<div data-ng-show="authentication.user" class="content">
+	<div class="home-title">
+		<div class="row home-title-heading">
+			<!--img src="/modules/core/img/brand/CSC_Logo.png" width="70"--> Hello <span class="red">{{authentication.user.firstName}}!</span> <br> Start creating your dashboards and start loving them.
+		</div>
+		<div class="row" style="text-align:center;">
+			<a ng-href="#!/dashboard">
+				<button class="csc-button bg-red"><span class="glyphicon glyphicon-plus"></span> Create a new Dashboard</button>
+			</a>
+		</div>
+	</div>
+	<div class="container">
+		<br>
+		<div ng-class="(i%3==0)?'row':''" ng-repeat="i in dummyArrayForRows">
+			<div class="col-md-4" data-ng-repeat="dashboard in authentication.user.dashboards.slice(i,i+3);">
+				<a ui-sref="dashboard({id:dashboard.dashboardId._id})">
+					<div class="dashboards" style="background-color:{{colors[i+$index]}}">
+						<span class="glyphicon glyphicon-user" style="float:right;margin-right:2%;" ng-show="dashboard.admin" title="Admin"></span>
+						<h3>{{dashboard.dashboardId.title}}</h3>
+						<h5>{{dashboard.dashboardId.description}}</h5>
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="row default-msg" ng-if="authentication.user.dashboards.length==0">
+			There are no <span class="red">dashboards</span> yet. Why don't you <span class="green">create</span> one?
+		</div>
+	</div>
+</div>
+</section>
+

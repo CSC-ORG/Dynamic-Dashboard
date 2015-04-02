@@ -1,0 +1,106 @@
+@media (min-width: 992px) {
+	.nav-users {
+		position: fixed;
+	}
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+.remove-account-container {
+	display: inline-block;
+	position: relative;
+}
+.btn-remove-account {
+	top: 10px;
+	right: 10px;
+	position: absolute;
+}
+
+.social-icons img{
+	width:45px;
+}
+
+.dashboard{
+	text-align: center;
+	font-size: 1.5em;
+}
+.form-inline{font-size: 0.7em;}
+.new-chart-btn{color:#A6A6A6;border:1px solid #eee;padding: 1%;border-radius: 10px;margin-top:50px;font-size: 0.7em;}
+.new-chart-btn:hover{background-color: #3498db;color:#e7e7e7;border:1px solid #3498db;cursor: pointer;transition:background-color,color,border 0.7s;}
+.view-src-btn{color:#A6A6A6;border:1px solid #eee;padding: 1%;border-radius: 10px;margin-top:50px;font-size: 0.7em;}
+.view-src-btn:hover{background-color: #6f5499;color:#e7e7e7;border:1px solid #6f5499;cursor: pointer;transition:background-color,color,border 0.7s;}
+.edit-dash-btn{color:#A6A6A6;border:1px solid #eee;padding: 1%;border-radius: 10px;margin-top:50px;font-size: 0.7em;}
+.edit-dash-btn:hover{background-color: #3c763d;color:#e7e7e7;border:1px solid #3c763d;cursor: pointer;transition:background-color,color,border 0.7s;}
+.settings-btn{color:#A6A6A6;border:1px solid #eee;padding: 1%;border-radius: 10px;margin-top:50px;font-size: 0.7em;}
+.settings-btn:hover{background-color: #F7CA18;color:#e7e7e7;border:1px solid #F7CA18;cursor: pointer;transition:background-color,color,border 0.7s;}
+.home-btn{color:#A6A6A6;border:1px solid #eee;padding: 1%;border-radius: 10px;margin-top:50px;font-size: 0.7em;}
+.home-btn:hover{background-color: #002C2E;color:#e7e7e7;border:1px solid #002C2E;cursor: pointer;transition:background-color,color,border 0.7s;}
+.dashboard-btn{color:#A6A6A6;border:1px solid #eee;padding: 1%;border-radius: 10px;margin-top:50px;font-size: 0.7em;}
+.dashboard-btn:hover{background-color: #D10092;color:#e7e7e7;border:1px solid #D10092;cursor: pointer;transition:background-color,color,border 0.7s;}
+
+.division{
+	border-bottom: 2px solid #eee;
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+.dashboard-main{
+	margin: 0 2% 0 2%;
+	text-align: left;
+}
+.last-update{font-size: 0.7em;text-align: center;}
+.title{
+	font-size: 1.5em;
+	font-style: bold;
+	color: inherit;
+}
+.title-edit-input{font-size: 1.5em;font-style: bold;}
+.title-edit-input textarea{border: 0;background-color:#e7e7e7;border-radius: 3px;}
+.subtitle{font-size: 0.7em;margin: 0.5% 0 0.5% 0;}
+.subtitle textarea{background-color: #e7e7e7;width:100%;border:0;}
+.default-msg{text-align: center;padding-top: 10%;}
+.edit-chart{border: 1px solid #e7e7e7;border-radius: 7px;-webkit-box-shadow: 1px 1px 1px 1px rgba(50, 50, 50, 0.75);}
+.edit-chart span{float: right;font-size: 0.7em;}
+/**********************CSS LOADER********************/
+.spinner {
+  text-align: center;
+}
+
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: #333;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+  animation: bouncedelay 1.4s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bouncedelay {
+  0%, 80%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 40% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+/************************************************************/

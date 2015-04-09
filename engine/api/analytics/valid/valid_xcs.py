@@ -247,4 +247,4 @@ print a'''
             ]
 }
 print DataView.filter_view(a['identifier'],a['limit'],a['skip'])'''
-'''print DataView.chart_view('123','550665e2f94139fc049a8ccd')'''
+print DataView.chart_view('7f9410afc50a66c4bc48c7540704cb6d.csv','5519147d317c559404e20b8e')

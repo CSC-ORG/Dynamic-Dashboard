@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 	request = require('request'),
 	redis = require('redis').createClient();
 
-
+//needs to be changed to a promise
 exports.create = function(req, res){
 	var dash = new Dashboard(req.body.dashboard);
 	dash.updated = Date.now();
@@ -22,14 +22,24 @@ exports.create = function(req, res){
 		} else {
 			var update = {dashboardId:doc._id,admin:true};
 			User.findByIdAndUpdate(req.user.id,{$push:{dashboards: update},updated:Date.now()},function(err,user){
-				if(err)
-					res.status(500).json({'error':'Could not update user.'});
-				else
-					res.status(200).json({dashboardId:doc._id});
-			});
-			redis.get(doc.source.identifier,function(err,reply){
-				var source = new Source(JSON.parse(reply));
-				source.save();
+				if(err){
+					//Dashboard.findByIdAndRemove(doc._id);
+					res.status(500).json({'error':'There was a problem updating the user dashboards.'});
+				}
+				else{
+					redis.get(doc.source.identifier,function(err,reply){
+						var source = new Source(JSON.parse(reply));
+						source.save(function(err,src){
+							if(err){
+								//Dashboard.findByIdAndRemove(doc._id);
+								//User.findOneAndUpdate(req.user.id,{$pull:{dashboards: update}});
+								res.status(500).send({'error':'There was a problem saving the source file.'});
+							}
+							else
+								res.status(200).json({dashboardId:doc._id});
+						});
+					});
+				}
 			});
 		}
 	});
@@ -101,6 +111,7 @@ exports.addDataset = function(req, res){
 		}, function(err, source){
 		if (err) res.status(500).send('No source file exists or a failed update.');
 		else{
+			redis.set(source.identifier,JSON.stringify(source));
 			res.status(200).send('Dataset has been added.');
 		}
 	});

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from analytics.valid.valid_xcs import Validator
 from analytics.valid.valid_xcs import DataView
 
-node_app_loc='C:\\Users\\dit\\Desktop\\datahub\\'
+node_app_loc='..\..\..\\'
 
 def ret_fileobj(path):
 	root_path = node_app_loc+path
@@ -19,8 +19,8 @@ def valid_check(request):
 		print data
 		identifier = data['identifier']
 		fileobj = ret_fileobj(data['path'])
-		sheetno = data['sheetno'] if data['extension']=='xls' else None
-		validate = Validator.validate(identifier,data['type'],int(sheetno),fileobj,data['extension'])
+		sheetno = int(data['sheetno']) if data['extension']=='xls' else None
+		validate = Validator.validate(identifier,data['type'],sheetno,fileobj,data['extension'])
 		validate['identifier'] = identifier
 		return Response(validate)
 	except:

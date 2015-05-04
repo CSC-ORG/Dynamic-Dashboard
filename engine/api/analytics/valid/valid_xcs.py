@@ -166,12 +166,12 @@ class Response():
 
 class Validator():
 	@classmethod
-	def validate_header(self,fileobj,filetype):
+	def validate_header(self,fileobj,filetype,sheetno):
 		is_valid_head = True
 		values = []
 		if(filetype == 'xls') or (filetype == 'xlsx'):
 			wb = xlrd.open_workbook(file_contents = fileobj.read())
-			sheet = wb.sheet_by_index(0)
+			sheet = wb.sheet_by_index(sheetno)
 			for i in range(0,sheet.ncols):
 				cell = sheet.cell(0,i)
 				if(cell.ctype == xlrd.XL_CELL_EMPTY):
@@ -218,7 +218,7 @@ class Validator():
 		res_message = {} 
 		non_unique_columns = []
 		try:
-			if(self.validate_header(fileobj,filetype)):
+			if(self.validate_header(fileobj,filetype,sheetno)):
 				fileobj.seek(0)
 				if (filetype == 'xls')|(filetype == 'xlsx'):
 					df = pd.read_excel(fileobj,sheetname=sheetno)

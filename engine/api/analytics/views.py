@@ -20,7 +20,7 @@ def valid_check(request):
 		data = request.DATA
 		identifier = data['identifier']
 		fileobj = ret_fileobj(data['path'])
-		sheetno = data['sheetno'] if data['extension']=='xls' else None
+		sheetno = int(data['sheetno']) if data['extension']=='xls' else None
 		validate = Validator.validate(identifier,data['type'],sheetno,fileobj,data['extension'])
 		validate['identifier'] = identifier
 		return Response(validate)

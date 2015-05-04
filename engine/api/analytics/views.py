@@ -6,11 +6,10 @@ from analytics.valid.valid_xcs import DataView
 from analytics.valid.valid_xcs import ret_sheetnames
 
 
-node_app_loc='C:\Users\dit\Desktop\databevy\\'
+node_app_loc='C:\Users\dit\Documents\GitHub\Dynamic-Dashboard-2015\\'
 
 def ret_fileobj(path):
 	root_path = node_app_loc+path
-	print root_path
 	fobj = open(root_path,'rb')
 	return fobj
 
@@ -45,7 +44,6 @@ def chart_view(request):
 def sheet_names(request):
 	try:
 		data = request.DATA
-		print data['path']
 		fileobj = ret_fileobj(data['path'])
 		return Response(ret_sheetnames(fileobj))
 	except:

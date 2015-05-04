@@ -6,6 +6,7 @@ import csv
 import redis
 import json
 import operator
+import re
 
 def get_spreadsheet(key):
 	fileobj_csv = requests.get('https://docs.google.com/spreadsheet/ccc?key='+key+'&output=csv').text

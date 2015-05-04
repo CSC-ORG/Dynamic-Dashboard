@@ -72,6 +72,7 @@ module.exports = function(app) {
 			.post(users.requiresLogin,dashboard.addAdmin)
 			.delete(users.requiresLogin,dashboard.delAdmin);
 	//upload file and send request to engine
+	app.post('/sheet', dashboard.getSheetNames);
 	app.post('/validate', dashboard.addFile);
 	//charts CRUD
 	app.route('/chart')

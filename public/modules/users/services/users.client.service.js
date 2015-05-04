@@ -32,6 +32,13 @@ angular.module('users').factory('Users', ['$resource',
 			return $http.put('/dashboard/'+id,obj);
 		};
 
+		factory.getSheetNames = function(payload){
+			return $http.post('/sheet',payload,{
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                	});
+		};
+
 		factory.addFile = function(payload){
 			return $http.post('/validate',payload,{
                         transformRequest: angular.identity,

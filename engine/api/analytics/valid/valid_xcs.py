@@ -27,6 +27,10 @@ def json_loads_redis(identifier):
 	strobj = conn.get(identifier)
 	return json.loads(strobj)
 
+def ret_sheetnames(fileobj):
+	wb = xlrd.open_workbook(file_contents = fileobj.read())
+	return {'sheet_names':wb.sheet_names()}
+
 class Filters:
 	@classmethod
 	def limit(self,df,limit):
@@ -42,11 +46,34 @@ class Filters:
 		return df[fro:to]
 	@classmethod
 	def sort_col(self,df,column,sort):
-		isAsc = True if sort == 1 else False
-		return df.sort_index(by = column, ascending = isAsc)
+		try:
+			isAsc = True if sort == 1 else False
+			return df.sort_index(by = column, ascending = isAsc)
+		except:
+			return df
 	@classmethod
 	def obj_where(self,df,column,values):
-		return df.ix[[item in values for item in df[column]]]
+		try:
+			return df.ix[[item in values for item in df[column]]]
+		except:
+			return df
+	@classmethod
+	def groupby(self,df,colgroup,colagr,agr):
+		try:
+			if agr == 'count':
+				return df.groupby(colgroup)[colagr].count() 
+			elif agr == 'sum':
+				return df.groupby(colgroup)[colagr].sum()
+			elif agr == 'mean':
+				return df.groupby(colgroup)[colagr].mean()
+			elif agr == 'max':
+				return df.groupby(colgroup)[colagr].max()
+			elif agr == 'min':
+				return df.groupby(colgroup)[colagr].min()
+			else:
+				return df
+		except:
+			return df
 
 class DataView():
 	@classmethod
@@ -61,10 +88,13 @@ class DataView():
 			for item in filters:
 				if (item['select'] != ''):
 					df = Filters.obj_where(df,item['column'],item['select'])
+				if (item['aggregate']!=''):
+					df = Filter.groupby(df,colgroup,colagr,agr)
 				if (item['sort'] != ''):
 					df = Filters.sort_col(df,item['column'],int(item['sort']))
 				if (item['limit']!=''):
 					df = Filters.limit(df,int(item['limit']))
+				
 		limit = len(df) if limit == None else limit
 		return Filters.limit_obj(df,limit,identifier,skip)
 	@classmethod
@@ -85,12 +115,12 @@ class ObjFile():
 		 'unique':{},
 		 'types':None,
 		 'identifier':None,
-		 'numrows':0
+		 'numrow':0
 		}
 		dataObj['identifier'] =identifier
 		dataObj['columns'] = df.columns.tolist()
 		dataObj['types'] = []
-		dataObj['numrows'] = len(df)
+		dataObj['numrow'] = len(df)
 		for column in df.columns:
 			dataObj['data'][column] = df[column].values.tolist()[skip:skip+limit]
 			try:
@@ -149,7 +179,8 @@ class Validator():
 					break
 				else:
 					if cell.value not in values:
-						values.append(cell.value)
+						value = re.sub(r'[.]','_',cell.value)
+						values.append(value)
 					else:
 						is_valid_head = False
 						break
@@ -162,7 +193,8 @@ class Validator():
 					break
 				else:
 					if head not in values:
-						values.append(head)
+						value = re.sub(r'[.]','_',head)
+						values.append(value)
 					else:
 						is_valid_head = False
 						break
@@ -224,7 +256,7 @@ class Validator():
 			return self.valid_spreadsheet(Identifier)
 		if types == 'file':
 			return self.valid_xl_csv(formats,fileobj,Identifier,sheetno)
-'''f=open('testfile/67.xls','rb')
+'''f=open('testfile/8.csv','rb')
 a=Validator.validate('123','file',f,'xls')
 print a'''
 '''a={
@@ -242,9 +274,10 @@ print a'''
                         "PUDUCHERRY"
                     ],
                     "column" : "STATE",
-                    "priority" : 1
+                    "priority" : 1,
+                    "aggregate":{'colagr':'','agr':''}
                 }
             ]
 }
 print DataView.filter_view(a['identifier'],a['limit'],a['skip'])'''
-print DataView.chart_view('7f9410afc50a66c4bc48c7540704cb6d.csv','5519147d317c559404e20b8e')
+'''print DataView.chart_view('123','550665e2f94139fc049a8ccd')'''

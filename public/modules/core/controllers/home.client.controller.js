@@ -116,6 +116,15 @@ angular.module('core').controller('HomeController', ['$scope', '$http', '$interv
 		
 		$scope.checkXLS = function(){
 			$scope.isXLS = (/\.xls/.test(document.getElementById('filename').value))?true:false;
+			if($scope.isXLS===true){
+				var payload = new FormData();
+				payload.append('file', document.getElementById('filename').files[0]);
+				Dashboard.getSheetNames(payload).success(function(data){
+					$scope.sheet_names = data.sheet_names;
+				}).error(function(err){
+					$scope.error = err;
+				});
+			};
 		};
 
 		function SendFile(payload){
@@ -152,19 +161,18 @@ angular.module('core').controller('HomeController', ['$scope', '$http', '$interv
 			else{
 				switch(filetype){
 					case 'xls':
-						var sheetno = document.getElementById('sheetno').value;
-						if(isNaN(sheetno)||sheetno==""){
-							$scope.isXLS = true;
-							$scope.error = 'Specify the sheet no.';
-							$scope.loader = false;
-							return;
-						}else{
-							var payload = new FormData();
-							payload.append('file', document.getElementById('filename').files[0]);
-							payload.append('sheetno', sheetno-1);
-							payload.append('type', 'file');
-							SendFile(payload);
-						}
+							var sheetno = $scope.sheet_names.indexOf(document.getElementById('sheetno').value);
+							if(sheetno<0){
+								console.log(sheetno);
+								$scope.error = 'Please select a sheet.';
+								$scope.loader = false;
+							}else{
+								var payload = new FormData();
+								payload.append('file', document.getElementById('filename').files[0]);
+								payload.append('sheetno', sheetno);
+								payload.append('type', 'file');
+								SendFile(payload);
+							}
 						break;
 					case 'csv':
 						var payload = new FormData();
@@ -406,7 +414,18 @@ angular.module('core').controller('HomeController', ['$scope', '$http', '$interv
 		$scope.init();
 		 // All filters for a dataset
 		$scope.addFilter = function(){
-			$scope.filters.unshift({"priority":++priority,"column":"Select Column","select":[],"sort":"0","limit":"10"});
+			$scope.filters.unshift(
+				{
+					"priority":++priority,
+					"column":"Select Column",
+					"select":[],
+					"sort":"0",
+					"limit":"10",
+					"aggregate":{
+						"colagr":'',
+						"agr":''
+					}
+				});
 		};
 
 		$scope.removeFilter = function(index){

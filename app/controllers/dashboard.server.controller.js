@@ -71,6 +71,23 @@ exports.update = function(req, res){
 	});
 };
 
+exports.getSheetNames = function(req, res){
+	//if no sheet no. then get sheet names
+	var options = {
+		extension: req.files.file.extension,
+		identifier: req.files.file.name,
+		path: req.files.file.path,
+		mimetype: req.files.file.mimetype,
+		size: req.files.file.size
+	};
+	request.post({url:'http://127.0.0.1:8000/sheet/', form: options}, function(err, response, body){
+		if(err) res.status(500).send('No sheets could be found.');
+		else{
+			res.status(200).send(body);
+		}
+	});
+};
+
 exports.addFile = function(req, res){
 	if(req.body.type==='link'){
 		request.post({url:'http://127.0.0.1:8000/valid/', form: req.body}, function(err, response, body){
@@ -82,20 +99,20 @@ exports.addFile = function(req, res){
 	}else if(req.body.type==='file'){
 		console.log(req.body);console.log(req.files);
 		var options = {
-			type: req.body.type,
-			extension: req.files.file.extension,
-			identifier: req.files.file.name,
-			path: req.files.file.path,
-			mimetype: req.files.file.mimetype,
-			size: req.files.file.size,
-			sheetno: req.body.sheetno || null
-		};
+				type: req.body.type,
+				extension: req.files.file.extension,
+				identifier: req.files.file.name,
+				path: req.files.file.path,
+				mimetype: req.files.file.mimetype,
+				size: req.files.file.size,
+				sheetno: req.body.sheetno || null
+			};
 		request.post({url:'http://127.0.0.1:8000/valid/', form: options}, function(err, response, body){
-			if(err) res.status(500).send('Some error occurred. Please try again.');
-			else{
-				res.status(200).send(body);
-			}
-		});
+				if(err) res.status(500).send('Some error occurred. Please try again.');
+				else{
+					res.status(200).send(body);
+				}
+			});
 	}else{
 		res.status(500).send('Kindly select a file or give a google spreadsheet link.');
 	}

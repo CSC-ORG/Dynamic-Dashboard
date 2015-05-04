@@ -6,8 +6,11 @@ body{background-color: #fcf8ee;}
 		<form class="form-inline" ng-show="upload">
 			Upload <span class="purple">Datasheet</span>
 			<div class="form-group">
-				<input type="file" class="form-control" id="filename" ng-blur="checkXLS()">
-				<input type="text" ng-show="isXLS" class="form-control" id="sheetno" placeholder="Sheet No." size="9" maxlength="5"/>
+				<input type="file" class="form-control" id="filename" ng-blur="checkXLS()">{{model}}
+				<select ng-if="isXLS" class="form-control" ng-model="model" id="sheetno" ng-init="model=''"/>
+					<option value="">Choose Sheet</option>
+					<option ng-repeat="sheet in sheet_names">{{sheet}}</option>
+				</select>
 			</div>
 			<span class="csc-button bg-red" ng-click="addFile()"><span class="glyphicon glyphicon-upload" style="font-size:1.2em;"></span></span> 
 			or Google <span class="green">spreadsheet</span>

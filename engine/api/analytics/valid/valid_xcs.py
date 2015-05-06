@@ -62,15 +62,15 @@ class Filters:
 	def groupby(self,df,colgroup,colagr,agr):
 		try:
 			if agr == 'count':
-				return df.groupby(colgroup)[colagr].count() 
+				return pd.DataFrame(df.groupby(colgroup)[colagr].count()).reset_index() 
 			elif agr == 'sum':
-				return df.groupby(colgroup)[colagr].sum()
+				return pd.DataFrame(df.groupby(colgroup)[colagr].sum()).reset_index() 
 			elif agr == 'mean':
-				return df.groupby(colgroup)[colagr].mean()
+				return pd.DataFrame(df.groupby(colgroup)[colagr].mean()).reset_index() 
 			elif agr == 'max':
-				return df.groupby(colgroup)[colagr].max()
+				return pd.DataFrame(df.groupby(colgroup)[colagr].max()).reset_index() 
 			elif agr == 'min':
-				return df.groupby(colgroup)[colagr].min()
+				return pd.DataFrame(df.groupby(colgroup)[colagr].min()).reset_index() 
 			else:
 				return df
 		except:
@@ -89,8 +89,9 @@ class DataView():
 			for item in filters:
 				if (item['select'] != ''):
 					df = Filters.obj_where(df,item['column'],item['select'])
-				if (item['aggregate']!=''):
-					df = Filter.groupby(df,colgroup,colagr,agr)
+				if (item['aggregate']['colagr']!=''):
+					df = Filters.groupby(df,item['column'],item['aggregate']['colagr'],item['aggregate']['agr'])
+					print df
 				if (item['sort'] != ''):
 					df = Filters.sort_col(df,item['column'],int(item['sort']))
 				if (item['limit']!=''):
@@ -257,8 +258,8 @@ class Validator():
 			return self.valid_spreadsheet(Identifier)
 		if types == 'file':
 			return self.valid_xl_csv(formats,fileobj,Identifier,sheetno)
-'''f=open('testfile/8.csv','rb')
-a=Validator.validate('123','file',f,'xls')
+'''f=open('testfile/2.xls','rb')
+a=Validator.validate('123','file',0,f,'xls')
 print a'''
 '''a={
 	'identifier':'123',

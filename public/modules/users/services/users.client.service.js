@@ -47,7 +47,7 @@ angular.module('users').factory('Users', ['$resource',
 		};
 
 		factory.viewSource = function(obj){
-			return $http.post('http://127.0.0.1:8000/data/',obj);
+			return $http.post('/data',obj);
 		};
 
 		factory.addLink = function(source){
@@ -63,7 +63,7 @@ angular.module('users').factory('Users', ['$resource',
 		};
 
 		factory.getDatasetData = function(obj){
-			return $http.post('http://127.0.0.1:8000/chart/',obj);
+			return $http.post('/chart',obj);
 		}
 
 		factory.getAdmins = function(identifier){

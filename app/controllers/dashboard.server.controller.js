@@ -112,7 +112,7 @@ exports.addFile = function(req, res){
 				else{
 					res.status(200).send(body);
 				}
-			});
+		});
 	}else{
 		res.status(500).send('Kindly select a file or give a google spreadsheet link.');
 	}
@@ -141,6 +141,24 @@ exports.getDatasets = function(req, res){
 			res.status(200).json({"response":dataset});
 		}
 	});
+};
+
+exports.getDatasetData = function(req, res) {
+	request.post({url:'http://127.0.0.1:8000/chart/', json: req.body}, function(err, response, body){
+		if(err||response.statusCode!=200) res.status(500).send('Some error occurred. Please try again.');
+		else{
+			res.status(200).json(body);
+		}
+	});	
+};
+
+exports.viewSource = function(req, res) {
+	request.post({url:'http://127.0.0.1:8000/data/', json: req.body}, function(err, response, body){
+		if(err||response.statusCode!=200) res.status(500).send('Some error occurred. Please try again.');
+		else{
+			res.status(200).json(body);
+		}
+	});	
 };
 
 exports.getAdmins = function(req, res){

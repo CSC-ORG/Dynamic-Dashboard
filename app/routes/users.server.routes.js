@@ -81,4 +81,7 @@ module.exports = function(app) {
 			.delete(users.requiresLogin,dashboard.delChart);
 	//Get suggestions
 	app.get('/users/suggestions',users.userSuggestions);
+	//Get chart data
+	app.post('/chart',dashboard.getDatasetData);
+	app.post('/data',dashboard.viewSource);
 };
